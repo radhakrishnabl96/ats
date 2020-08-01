@@ -127,7 +127,7 @@ SubgridEvaluator::SubgridEvaluator(Teuchos::ParameterList& plist) :
   dependencies_.insert(snow_death_rate_key_);
 
   // -- skin properties  
-  ponded_depth_key_ = Keys::readKey(plist, domain_, "ponded depth", "ponded_depth");
+  ponded_depth_key_ = Keys::readKey(plist, domain_, "volumetric ponded depth", "volumetric_ponded_depth");
   dependencies_.insert(ponded_depth_key_);
   unfrozen_fraction_key_ = Keys::readKey(plist, domain_, "unfrozen fraction", "unfrozen_fraction");
   dependencies_.insert(unfrozen_fraction_key_);
@@ -265,7 +265,7 @@ SubgridEvaluator::EvaluateField_(const Teuchos::Ptr<State>& S,
     if (area_fracs[0][c] > 0.) {
       SEBPhysics::GroundProperties surf;
       surf.temp = surf_temp[0][c];
-      surf.pressure = surf_pres[0][c];
+      surf.pressure = std::min<double>(surf_pres[0][c],101325);
       if (ss_topcell_based_evap_)
         surf.pressure = ss_pres[0][cells[0]];
       surf.roughness = roughness_bare_ground_;
