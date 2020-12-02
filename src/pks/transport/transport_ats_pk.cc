@@ -370,7 +370,7 @@ void Transport_ATS::Initialize(const Teuchos::Ptr<State>& S)
           bc_list.set("entity_gid_out", gid);
 
           Teuchos::RCP<TransportDomainFunction> bc =
-            factory.Create(bc_list, "none", AmanziMesh::FACE, Kxy);
+            factory.Create(bc_list, "boundary concentration", AmanziMesh::FACE, Kxy);
 
           for (int i = 0; i < component_names_.size(); i++){
             bc->tcc_names().push_back(component_names_[i]);
