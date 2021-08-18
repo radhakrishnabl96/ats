@@ -1,0 +1,9 @@
+import urllib2
+
+try:
+    x = urllib2.urlopen("https://pythonprogramming.net").read()
+    
+    print(x)
+
+except Expception as e:
+    print str(e)
