@@ -104,12 +104,12 @@ layer_mat_ids.append(1002)
 
 # -- print out a summary --
 count = 0
-print "Cell summary:"
-print "--------------------------------------"
-print "l_id| c_id| mat_id| dz"
+print("Cell summary:")
+print("--------------------------------------")
+print("l_id| c_id| mat_id| dz")
 for i,thick in enumerate(layer_data):
     for j in range(layer_ncells[i]):
-        print " %02i | %02i | %04i | %g"%(i,count,layer_mat_ids[i],thick/layer_ncells[i])
+        print(" %02i | %02i | %04i | %g"%(i,count,layer_mat_ids[i],thick/layer_ncells[i]))
         count += 1
 
 # Extrude the 3D model with this structure and write to file
@@ -117,4 +117,4 @@ m3 = meshing_ats.Mesh3D.extruded_Mesh2D(m2, layer_types,
                                         layer_data, 
                                         layer_ncells, 
                                         layer_mat_ids)
-m3.write_exodus("column.exo")
+m3.write_exodus("column_org.exo")

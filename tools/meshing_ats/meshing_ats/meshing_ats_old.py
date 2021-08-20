@@ -38,9 +38,9 @@ import collections
 import argparse
 
 try:
-    import exodus3 as exodus
+    import exodus
 except ImportError:
-    sys.path.append(os.path.join(os.environ["SEACAS_DIR"],"lib"))
+    sys.path.append(os.path.join(os.environ["AMANZI_TPLS_DIR"],"SEACAS_DIR","lib"))
     import exodus3 as exodus
 
 

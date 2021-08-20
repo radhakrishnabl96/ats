@@ -1,16 +1,16 @@
 import sys,os
 sys.path.append(os.path.join(os.environ['ATS_SRC_DIR'],'tools','meshing_ats'))
 
-import meshing_ats_2
+import meshing_ats
 import numpy as np
 from matplotlib import pyplot as plt
 
 
 
-### Defining the geometry and meshing for the Yakou catchement
+# Defining the geometry and meshing for the Yakou catchement
 
-#### Step 1 - The surface with 20° slope
-##### Length of the catchment = 1000 m, slope = 20°, dx_surface = 10 m, dz_surface =  2 m? or defined later in step 2?
+# Step 1 - The surface with 20° slope
+# Length of the catchment = 1000 m, slope = 20°, dx_surface = 10 m, dz_surface =  2 m? or defined later in step 2?
 
 
 # 1 km long hillslope, 20% slope
@@ -18,7 +18,7 @@ x = np.linspace(0,1000,101)
 z = 200 - 0.2*x 
 # Gradient = 200/1000 = 0.2
 
-m2 = meshing_ats_2.Mesh2D.from_Transect(x,z) # Creates a recatangular mesh with x + z nodes, x - 1 number of cells
+m2 = meshing_ats.Mesh2D.from_Transect(x,z) # Creates a recatangular mesh with x + z nodes, x - 1 number of cells
 
 ### Step 2 - The vertical cross-section [along a single column]
 
@@ -114,5 +114,5 @@ for j in range(len(layer_depth_yakou),sum(layer_ncells_yakou)):
     
 
 # make the mesh, save it as an exodus file
-m3 = meshing_ats_2.Mesh3D.extruded_Mesh2D(m2, layer_types_yakou,layer_data_yakou, layer_ncells_yakou, layer_mat_ids_yakou)
-m3.write_exodus("Yakou_model.exo")
+m3 = meshing_ats.Mesh3D.extruded_Mesh2D(m2, layer_types_yakou,layer_data_yakou, layer_ncells_yakou, layer_mat_ids_yakou)
+m3.write_exodus("Yakou_model_trial.exo")
