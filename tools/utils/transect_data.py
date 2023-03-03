@@ -14,8 +14,8 @@ def fullname(varname):
     return fullname
 
 
-def transect_data(varnames, keys='all', directory=".", filename="visdump_data.h5",
-                  mesh_filename="visdump_mesh.h5", coord_order=None, deformable=False, return_map=False):
+def transect_data(varnames, keys='all', directory=".", filename="ats_vis_data.h5",
+                  mesh_filename="ats_vis_mesh.h5", coord_order=None, deformable=False, return_map=False):
     """Pulls simulation output into structured 2D arrays for transect-based, (i,j) indexing.
 
     Input:
@@ -97,7 +97,8 @@ def transect_data(varnames, keys='all', directory=".", filename="visdump_data.h5
 
     with h5py.File(os.path.join(directory,filename),'r') as dat:
         keys_avail = dat[fullname(varnames[0])].keys()
-        keys_avail.sort(lambda a,b: int.__cmp__(int(a),int(b)))
+        #keys_avail.sort(lambda a,b: int.__cmp__(int(a),int(b)))
+        sorted(keys_avail)
 
         if keys == 'all':
             keys = keys_avail
@@ -136,13 +137,13 @@ def transect_data(varnames, keys='all', directory=".", filename="visdump_data.h5
     shp = vals.shape
 
     if not return_map:
-        return vals.reshape(shp[0], shp[1], nx, nz)
+        return vals.reshape(int(shp[0]), int(shp[1]), int(nx), int(nz))
     else:
-        return vals.reshape(shp[0], shp[1], nx, nz), xyz_sorting.reshape(nx, nz)
+        return vals.reshape(int(shp[0]), int(shp[1]), int(nx), int(nz)), xyz_sorting.reshape(int(nx), int(nz))
 
 
 def plot(dataset, ax, cax=None, vmin=None, vmax=None, cmap="jet",
-         label=None, mesh_filename="visdump_mesh.h5", directory=".", y_coord=0.0,
+         label=None, mesh_filename="ats_vis_mesh.h5", directory=".", y_coord=0.0,
          linewidths=1):
     """Draws a dataset on an ax."""
     import matplotlib.collections
@@ -155,7 +156,7 @@ def plot(dataset, ax, cax=None, vmin=None, vmax=None, cmap="jet",
 
     # get the mesh and collapse to 2D
     etype, coords, conn = mesh.meshElemXYZ(filename=mesh_filename, directory=directory)
-    if etype is not 'HEX':
+    if etype != 'HEX':
         raise RuntimeError("Only works for Hexs")
 
     coords2 = np.array([[coords[i][0::2] for i in c[1:] if abs(coords[i][1] - y_coord) < 1.e-8] for c in conn])
@@ -166,11 +167,11 @@ def plot(dataset, ax, cax=None, vmin=None, vmax=None, cmap="jet",
         print(coords2.shape)
         for c in conn:
             if len(c) != 9:
-                print c
+                print(c)
                 raise RuntimeError("what is a conn?")
             coords3 = np.array([coords[i][:] for i in c[1:] if abs(coords[i][1] - y_coord) < 1.e-8])
             if coords3.shape[0] != 4:
-                print coords
+                print(coords)
                 raise RuntimeError("Unable to squash to 2D")
 
     # reorder anti-clockwise
@@ -202,9 +203,9 @@ def plot(dataset, ax, cax=None, vmin=None, vmax=None, cmap="jet",
     ax.set_xlim(xmin,xmax)
     ax.set_ylim(zmin,zmax)
 
-    if cax is not None:
+    if cax != None:
         cb = plt.colorbar(polygons, cax=cax)
-        if label is not None:
+        if label != None:
             cb.set_label(label)
         
     return ((xmin,xmax),(zmin,zmax))
